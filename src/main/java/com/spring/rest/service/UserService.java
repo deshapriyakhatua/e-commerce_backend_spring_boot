@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service;
 import com.spring.rest.model.User;
 import com.spring.rest.repository.UserRepository;
 
-import jakarta.persistence.EntityNotFoundException;
-
 @Service
 public class UserService {
 	
@@ -33,26 +31,25 @@ public class UserService {
 	}
 
 	// Get a user by ID
-	public ResponseEntity<Optional<User>> fetchUserById(UUID id) {
-		if (id == null) {
-			throw new IllegalArgumentException("ID cannot be null");
-		}
+	public ResponseEntity<User> fetchUserById(UUID id) {
+		
 		Optional<User> user = userRepository.findById(id);
 		if (user.isPresent()) {
-			return ResponseEntity.ok(user);
+			return ResponseEntity.ok(user.get());
 		} else {
 			return ResponseEntity.notFound().build();
 		}
+		
 	}
 
 	// For updating a single user from the database
 	public ResponseEntity<User> updateUser(UUID id, User updatedUser) {
-		if (id == null) {
-			throw new IllegalArgumentException("ID cannot be null");
+		
+		Optional<User> user = userRepository.findById(id);
+		if (!user.isPresent()) {
+			return ResponseEntity.notFound().build();
 		}
-		User existingUser = userRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException(String.valueOf(id)));
-		System.out.println(existingUser.getEmail() + " " + existingUser.getPassword());
+		User existingUser = user.get();
 		existingUser.setName(updatedUser.getName());
 		existingUser.setPhone(updatedUser.getPhone());
 		existingUser.setGender(updatedUser.getGender());
@@ -68,8 +65,16 @@ public class UserService {
 
 	// For deleting a single user from the database
 	public ResponseEntity<String> deleteUser(UUID id) {
-		userRepository.deleteById(id);
-		return ResponseEntity.ok("User Deleted Successfully");
+		
+		Optional<User> user = userRepository.findById(id);
+		if(user.isPresent()) {
+			userRepository.delete(user.get());
+			return ResponseEntity.ok("User Deleted Successfully against id " + id );
+		}
+		else {
+			return ResponseEntity.ok("User Doesn't Exist");
+		}
+		
 	}
 
 }

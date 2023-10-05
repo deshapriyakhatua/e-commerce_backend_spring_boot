@@ -1,7 +1,6 @@
 package com.spring.rest.controler;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
@@ -41,22 +40,21 @@ public class MyController {
 
 	// Get a user by ID
 	@GetMapping("/users/{userId}")
-	public ResponseEntity<Optional<User>> getUserById(@PathVariable UUID userId) {
+	public ResponseEntity<User> getUserById(@PathVariable UUID userId) {
 		return userService.fetchUserById(userId);
 	}
 
 	// Update a user
 	@PutMapping(path = "/users/{userId}")
-	public ResponseEntity<User> updateUser(@PathVariable(value = "userId") UUID userId,
+	public ResponseEntity<User> updateUser(@PathVariable UUID userId,
 			@RequestBody User user) {
 		return userService.updateUser(userId, user);
 	}
 
 	// Delete a user
 	@DeleteMapping(value = "/users/{userId}")
-	public String deleteUser(@PathVariable UUID userId) {
-		userService.deleteUser(userId);
-		return "User Deleted Successfully against id " + userId + " ";
+	public ResponseEntity<String> deleteUser(@PathVariable UUID userId) {
+		return userService.deleteUser(userId);		
 	}
 
 }

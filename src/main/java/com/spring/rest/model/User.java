@@ -65,24 +65,7 @@ public class User {
 		this.longitude = longitude;
 		this.profilePic = profilePic;
 		this.coverPic = coverPic;
-	}
-	
-	
-
-	public User(String name, long phone, String gender, String profession, String address, double latitude,
-			double longitude, String profilePic, String coverPic) {
-		this.name = name;
-		this.phone = phone;
-		this.gender = gender;
-		this.profession = profession;
-		this.address = address;
-		this.latitude = latitude;
-		this.longitude = longitude;
-		this.profilePic = profilePic;
-		this.coverPic = coverPic;
-	}
-	
-	
+	}	
 
 	public User(String email, String password) {
 		this.email = email;
@@ -125,7 +108,7 @@ public class User {
 		return phone;
 	}
 
-	public void setPhone(int phone) {
+	public void setPhone(long phone) {
 		this.phone = phone;
 	}
 
