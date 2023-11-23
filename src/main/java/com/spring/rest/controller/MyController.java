@@ -1,4 +1,4 @@
-package com.spring.rest.controler;
+package com.spring.rest.controller;
 
 import java.util.List;
 import java.util.UUID;
