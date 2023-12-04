@@ -1,5 +1,6 @@
 package com.spring.rest.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,7 +20,9 @@ public class CustomUser {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	@Column(unique = true, nullable = false)
 	private String email;
+	@Column(nullable = false)
 	private String password;
 	private String roles;
 }

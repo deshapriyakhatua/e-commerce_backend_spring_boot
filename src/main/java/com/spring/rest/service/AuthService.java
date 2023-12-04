@@ -1,5 +1,7 @@
 package com.spring.rest.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,7 @@ import com.spring.rest.jwt.JwtHelper;
 import com.spring.rest.model.CustomUser;
 import com.spring.rest.model.JwtRequest;
 import com.spring.rest.model.JwtResponse;
+import com.spring.rest.model.MyExceptionDetails;
 import com.spring.rest.repository.CustomUserRepository;
 
 @Service
@@ -30,11 +33,19 @@ public class AuthService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	public ResponseEntity<JwtResponse> registerUser(CustomUser customUser) {
+	public ResponseEntity<Object> registerUser(CustomUser customUser) {
 
+		if(customUser.getPassword().length() == 0) {
+			return new ResponseEntity<>(new MyExceptionDetails("Empty password field !","uri=/auth/signUp"), HttpStatus.BAD_REQUEST);
+		}
 		customUser.setPassword(passwordEncoder.encode(customUser.getPassword()));
-		customUserRepository.save(customUser);
-
+		Optional<CustomUser> optionalUser = customUserRepository.findByEmail(customUser.getEmail());
+		if(!optionalUser.isPresent()) {
+			customUserRepository.save(customUser);
+		}
+		else {
+			return new ResponseEntity<>(new MyExceptionDetails(optionalUser.get().getEmail() + " already registered !","uri=/auth/signUp"), HttpStatus.BAD_REQUEST);
+		}
 		String token = helper.generateToken(customUser.getEmail());
 
 		JwtResponse jwtResponse = new JwtResponse();

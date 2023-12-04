@@ -2,6 +2,7 @@ package com.spring.rest.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +21,9 @@ public class AuthController {
 	private AuthService authService;
 
 	@PostMapping("/signUp")
-	public ResponseEntity<JwtResponse> signUp(@RequestBody CustomUser customUser) {
+	public ResponseEntity<Object> signUp(@ModelAttribute CustomUser customUser) {
 
-		System.out.println("login controller called");
+		System.out.println("signup controller called");
 		return authService.registerUser(customUser);
 	}
 
