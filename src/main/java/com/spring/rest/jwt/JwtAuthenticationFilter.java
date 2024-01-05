@@ -38,7 +38,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException, java.io.IOException {
 
-		System.out.println("JwtAuthenticationFilter called");
 		System.out.println(request.getRequestURI());
 
 		String authorizationHeader = request.getHeader("Authorization");
@@ -106,7 +105,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	@Override
 	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
 
-		return request.getRequestURI().equals("/auth/signUp") || request.getRequestURI().equals("/auth/logIn");
+		return request.getRequestURI().equals("/auth/signUp") || request.getRequestURI().equals("/auth/signIn");
 
 	}
 

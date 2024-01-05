@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 public class MyExceptionDetails {
 
-	private String detail;
-	private String instance;
+	private String error;
+	private String status;
 
 }

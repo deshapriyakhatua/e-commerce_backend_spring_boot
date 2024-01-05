@@ -20,9 +20,9 @@ public class CustomUserDetails implements UserDetails {
 	public CustomUserDetails(CustomUser customUser) {
 		email = customUser.getEmail();
 		password = customUser.getPassword();
-		authorities = Arrays.stream(customUser.getRoles().split(",")).map(SimpleGrantedAuthority::new)
+		authorities = Arrays.stream(customUser.getRoles().toArray(new String[0])).map(SimpleGrantedAuthority::new)
 				.collect(Collectors.toList());
-		System.out.println(Arrays.toString(customUser.getRoles().split(",")));
+		System.out.println(authorities);
 	}
 
 	@Override

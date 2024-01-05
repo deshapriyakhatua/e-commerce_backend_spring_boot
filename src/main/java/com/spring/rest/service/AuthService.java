@@ -1,6 +1,8 @@
 package com.spring.rest.service;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,13 +18,18 @@ import com.spring.rest.model.CustomUser;
 import com.spring.rest.model.JwtRequest;
 import com.spring.rest.model.JwtResponse;
 import com.spring.rest.model.MyExceptionDetails;
+import com.spring.rest.model.UserRoles;
 import com.spring.rest.repository.CustomUserRepository;
+import com.spring.rest.repository.UserRolesRepository;
 
 @Service
 public class AuthService {
 
 	@Autowired
 	private CustomUserRepository customUserRepository;
+	
+	@Autowired
+	private UserRolesRepository userRolesRepository;
 
 	@Autowired
 	private AuthenticationProvider authenticationProvider;
@@ -33,18 +40,29 @@ public class AuthService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	public ResponseEntity<Object> registerUser(CustomUser customUser) {
+	public ResponseEntity<Object> signUp(CustomUser customUser) {
 
 		if(customUser.getPassword().length() == 0) {
 			return new ResponseEntity<>(new MyExceptionDetails("Empty password field !","uri=/auth/signUp"), HttpStatus.BAD_REQUEST);
 		}
+		
 		customUser.setPassword(passwordEncoder.encode(customUser.getPassword()));
 		Optional<CustomUser> optionalUser = customUserRepository.findByEmail(customUser.getEmail());
+		
 		if(!optionalUser.isPresent()) {
+			
+			Set<UserRoles> roles = customUser.getRoles();
+			Set<UserRoles> newRoles = new HashSet<>();
+				
+			for(UserRoles role : roles) {
+				newRoles.add( userRolesRepository.findByRoleName(role.getRoleName()).get() );
+			}
+			
+			customUser.setRoles(newRoles);
 			customUserRepository.save(customUser);
 		}
 		else {
-			return new ResponseEntity<>(new MyExceptionDetails(optionalUser.get().getEmail() + " already registered !","uri=/auth/signUp"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new MyExceptionDetails("User already registered !",HttpStatus.BAD_REQUEST.toString()), HttpStatus.BAD_REQUEST);
 		}
 		String token = helper.generateToken(customUser.getEmail());
 
@@ -55,9 +73,9 @@ public class AuthService {
 
 	}
 
-	public ResponseEntity<JwtResponse> logInUser(JwtRequest jwtRequest) {
+	public ResponseEntity<JwtResponse> signIn(JwtRequest jwtRequest) {
 
-		String email = jwtRequest.getEmailId();
+		String email = jwtRequest.getEmail();
 		String password = jwtRequest.getPassword();
 
 		UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(

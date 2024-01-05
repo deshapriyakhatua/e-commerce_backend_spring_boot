@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring.rest.model.User;
+import com.spring.rest.model.UserProfile;
 import com.spring.rest.service.UserService;
 
 @RestController
@@ -28,26 +28,26 @@ public class MyController {
 
 	// Save user
 	@PostMapping("/users")
-	public ResponseEntity<User> saveUser(@RequestBody User user) {
-		return userService.saveUser(user);
+	public ResponseEntity<UserProfile> saveUser(@RequestBody UserProfile userProfile) {
+		return userService.saveUser(userProfile);
 	}
 
 	// Get all users
 	@GetMapping("/users")
-	public ResponseEntity<List<User>> getAllUsers() {
+	public ResponseEntity<List<UserProfile>> getAllUsers() {
 		return userService.fetchAllUsers();
 	}
 
 	// Get a user by ID
 	@GetMapping("/users/{userId}")
-	public ResponseEntity<User> getUserById(@PathVariable UUID userId) {
+	public ResponseEntity<UserProfile> getUserById(@PathVariable UUID userId) {
 		return userService.fetchUserById(userId);
 	}
 
 	// Update a user
 	@PutMapping(path = "/users/{userId}")
-	public ResponseEntity<User> updateUser(@PathVariable UUID userId,
-			@RequestBody User user) {
+	public ResponseEntity<UserProfile> updateUser(@PathVariable UUID userId,
+			@RequestBody UserProfile user) {
 		return userService.updateUser(userId, user);
 	}
 

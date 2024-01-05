@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 public class JwtRequest {
 
-	public String emailId;
+	public String email;
 	public String password;
 
 }
