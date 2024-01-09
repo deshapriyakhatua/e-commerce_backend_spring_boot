@@ -52,4 +52,14 @@ public class CustomUser {
 	@JsonIgnoreProperties({"user","hibernateLazyInitializer", "handler"})
 	private UserProfile profile;
 	
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "address_id")
+	@JsonIgnoreProperties({"user","hibernateLazyInitializer", "handler"})
+	private UserAddress address;
+	
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "cart_id")
+	@JsonIgnoreProperties({"user","hibernateLazyInitializer", "handler"})
+	private UserCart cart;
+	
 }
