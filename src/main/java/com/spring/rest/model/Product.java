@@ -2,11 +2,13 @@ package com.spring.rest.model;
 
 import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -19,22 +21,25 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "carts")
-public class UserCart {
+@Table(name = "products")
+public class Product {
 
 	@Id
 	@GeneratedValue
-	private UUID cartId;
+	private UUID id;
 	
 	@Column(nullable = false)
-	private int quantity;
+	private String title;
 	
-	@OneToOne(mappedBy = "cart")
-	@JsonIgnoreProperties("cart")
-	private CustomUser user;
+	@Column(nullable = false)
+	private Double price;
 	
-	@OneToOne(mappedBy = "cart")
-	@JsonIgnoreProperties("cart")
-	private Product product;
+	@Column(nullable = true)
+	private String description;
+	
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "cart_id")
+	@JsonIgnoreProperties({"product","hibernateLazyInitializer", "handler"})
+	private UserCart cart;
 	
 }
