@@ -105,7 +105,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	@Override
 	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
 
-		return request.getRequestURI().equals("/auth/signUp") || request.getRequestURI().equals("/auth/signIn");
+		return request.getRequestURI().startsWith("/auth/") || request.getRequestURI().startsWith("/tester/");
 
 	}
 

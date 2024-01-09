@@ -1,6 +1,5 @@
 package com.spring.rest.model;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,9 +19,7 @@ public class CustomUserDetails implements UserDetails {
 	public CustomUserDetails(CustomUser customUser) {
 		email = customUser.getEmail();
 		password = customUser.getPassword();
-		authorities = Arrays.stream(customUser.getRoles().toArray(new String[0])).map(SimpleGrantedAuthority::new)
-				.collect(Collectors.toList());
-		System.out.println(authorities);
+		authorities = customUser.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getRoleName())).collect(Collectors.toList());
 	}
 
 	@Override

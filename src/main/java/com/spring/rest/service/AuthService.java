@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -64,6 +63,7 @@ public class AuthService {
 		else {
 			return new ResponseEntity<>(new MyExceptionDetails("User already registered !",HttpStatus.BAD_REQUEST.toString()), HttpStatus.BAD_REQUEST);
 		}
+		
 		String token = helper.generateToken(customUser.getEmail());
 
 		JwtResponse jwtResponse = new JwtResponse();
@@ -78,14 +78,13 @@ public class AuthService {
 		String email = jwtRequest.getEmail();
 		String password = jwtRequest.getPassword();
 
-		UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-				email, password);
+		UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(email, password);
 
 		try {
 			authenticationProvider.authenticate(usernamePasswordAuthenticationToken);
 
-		} catch (BadCredentialsException e) {
-			throw new InvalidCredentialsException("Invalid Username or Password  !");
+		} catch (Exception e) {
+			throw new InvalidCredentialsException("Invalid Username or Password  ! " + e);
 		}
 
 		String token = helper.generateToken(email);
