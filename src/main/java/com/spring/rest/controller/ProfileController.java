@@ -11,28 +11,28 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring.rest.model.UserProfile;
-import com.spring.rest.service.UserProfileService;
+import com.spring.rest.model.Profile;
+import com.spring.rest.service.ProfileService;
 
 @RestController
 @RequestMapping("/profile")
-public class UserProfileController {
+public class ProfileController {
 
 	@Autowired
-	private UserProfileService userService;
+	private ProfileService userService;
 
 	@GetMapping("/users")
-	public ResponseEntity<List<UserProfile>> getAllUsers() {
+	public ResponseEntity<List<Profile>> getAllUsers() {
 		return userService.fetchAllUsers();
 	}
 
 	@GetMapping("/user/{userId}")
-	public ResponseEntity<UserProfile> getUserById(@PathVariable UUID userId) {
+	public ResponseEntity<Profile> getUserById(@PathVariable UUID userId) {
 		return userService.fetchUserById(userId);
 	}
 
 	@PutMapping(path = "/user/{userId}")
-	public ResponseEntity<UserProfile> updateUser(@PathVariable UUID userId, @RequestBody UserProfile user) {
+	public ResponseEntity<Profile> updateUser(@PathVariable UUID userId, @RequestBody Profile user) {
 		return userService.updateUser(userId, user);
 	}
 

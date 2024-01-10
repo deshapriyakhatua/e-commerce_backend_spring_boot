@@ -11,41 +11,41 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.spring.rest.model.UserRoles;
-import com.spring.rest.service.UserRolesService;
+import com.spring.rest.model.Roles;
+import com.spring.rest.service.RolesService;
 
 @RestController
-@RequestMapping("/editor")
-public class UserRoleController {
+@RequestMapping("/tester")
+public class RoleController {
 
 	@Autowired
-	private final UserRolesService userRolesService;
+	private final RolesService userRolesService;
 
-	public UserRoleController(UserRolesService userRolesService) {
+	public RoleController(RolesService userRolesService) {
 		this.userRolesService = userRolesService;
 	}
 	
 	@PostMapping("/role")
-	public ResponseEntity<UserRoles> saveRole(@RequestBody UserRoles userRole) {
-		UserRoles newRoles = userRolesService.saveRole(userRole);
+	public ResponseEntity<Roles> saveRole(@RequestBody Roles userRole) {
+		Roles newRoles = userRolesService.saveRole(userRole);
 		return ResponseEntity.ok(newRoles);
 	}
 	
 	@PostMapping("/roles")
-	public ResponseEntity<List<UserRoles>> saveRoles(@RequestBody Set<UserRoles> userRoles) {
-		List<UserRoles> newRoles = userRolesService.saveRoles(userRoles);
+	public ResponseEntity<List<Roles>> saveRoles(@RequestBody Set<Roles> userRoles) {
+		List<Roles> newRoles = userRolesService.saveRoles(userRoles);
 		return ResponseEntity.ok(newRoles);
 	}
 	
 	@GetMapping("/role/{roleName}")
-	public ResponseEntity<UserRoles> getRole(@PathVariable String roleName) {
-		UserRoles newRoles = userRolesService.getRole(roleName);
+	public ResponseEntity<Roles> getRole(@PathVariable String roleName) {
+		Roles newRoles = userRolesService.getRole(roleName);
 		return ResponseEntity.ok(newRoles);
 	}
 	
 	@GetMapping("/roles")
-	public ResponseEntity<List<UserRoles>> getRoles() {
-		List<UserRoles> newRoles = userRolesService.getRoles();
+	public ResponseEntity<List<Roles>> getRoles() {
+		List<Roles> newRoles = userRolesService.getRoles();
 		return ResponseEntity.ok(newRoles);
 	}
 }

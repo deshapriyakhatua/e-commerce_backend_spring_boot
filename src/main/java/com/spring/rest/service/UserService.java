@@ -8,26 +8,26 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.spring.rest.model.CustomUser;
-import com.spring.rest.repository.CustomUserRepository;
+import com.spring.rest.model.User;
+import com.spring.rest.repository.UserRepository;
 
 @Service
 public class UserService {
 
 	@Autowired
-	private CustomUserRepository customUserRepository;
+	private UserRepository customUserRepository;
 	
-	public ResponseEntity<CustomUser> getUser(String email) {
-		Optional<CustomUser> result = customUserRepository.findByEmail(email);
-		CustomUser user = new CustomUser();
+	public ResponseEntity<User> getUser(String email) {
+		Optional<User> result = customUserRepository.findByEmail(email);
+		User user = new User();
 		if(result.isPresent()) {
 			user = result.get();
 		}
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 	
-	public ResponseEntity<List<CustomUser>> getUsers() {
-		List<CustomUser> users = customUserRepository.findAll();
+	public ResponseEntity<List<User>> getUsers() {
+		List<User> users = customUserRepository.findAll();
 		return new ResponseEntity<>(users, HttpStatus.OK);
 	}
 }

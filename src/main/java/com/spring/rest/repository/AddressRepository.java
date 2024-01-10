@@ -4,8 +4,8 @@ import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.spring.rest.model.UserAddress;
+import com.spring.rest.model.Address;
 
-public interface UserAddressRepository extends JpaRepository<UserAddress, UUID> {
+public interface AddressRepository extends JpaRepository<Address, UUID> {
 
 }

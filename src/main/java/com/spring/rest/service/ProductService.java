@@ -26,7 +26,7 @@ public class ProductService {
 	
 	public ResponseEntity<Product> updateProduct(Product product){
 		
-		Optional<Product> result = productRepository.findById(product.getId());
+		Optional<Product> result = productRepository.findById(product.getProductId());
 		if(result.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}

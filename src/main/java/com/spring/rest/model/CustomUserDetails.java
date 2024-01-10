@@ -16,7 +16,7 @@ public class CustomUserDetails implements UserDetails {
 	private String password;
 	private List<GrantedAuthority> authorities;
 
-	public CustomUserDetails(CustomUser customUser) {
+	public CustomUserDetails(User customUser) {
 		email = customUser.getEmail();
 		password = customUser.getPassword();
 		authorities = customUser.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getRoleName())).collect(Collectors.toList());

@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -26,7 +27,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")
-public class CustomUser {
+public class User {
 
 	@Id
 	@GeneratedValue
@@ -45,21 +46,20 @@ public class CustomUser {
             inverseJoinColumns = @JoinColumn(name = "role_id")
             )
 	@JsonIgnoreProperties("users")
-	private Set<UserRoles> roles;
+	private Set<Roles> roles;
 	
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "profile_id")
 	@JsonIgnoreProperties({"user","hibernateLazyInitializer", "handler"})
-	private UserProfile profile;
+	private Profile profile;
 	
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "address_id")
-	@JsonIgnoreProperties({"user","hibernateLazyInitializer", "handler"})
-	private UserAddress address;
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JsonIgnoreProperties("user")
+	private Set<Address> addresses;
 	
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "cart_id")
 	@JsonIgnoreProperties({"user","hibernateLazyInitializer", "handler"})
-	private UserCart cart;
+	private Cart cart;
 	
 }

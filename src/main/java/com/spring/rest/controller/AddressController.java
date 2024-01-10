@@ -10,28 +10,28 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.spring.rest.model.UserAddress;
-import com.spring.rest.service.UserAddressService;
+import com.spring.rest.model.Address;
+import com.spring.rest.service.AddressService;
 
 @RestController
 @RequestMapping("/address")
-public class UserAddressController {
+public class AddressController {
 
 	@Autowired
-	UserAddressService userAddressService;
+	AddressService userAddressService;
 
 	@GetMapping("/addresses")
-	public ResponseEntity<List<UserAddress>> getAllAddresses() {
+	public ResponseEntity<List<Address>> getAllAddresses() {
 		return userAddressService.fetchAllAddresses();
 	}
 
 	@GetMapping("/address/{userId}")
-	public ResponseEntity<UserAddress> getAddressById(@PathVariable UUID userId) {
+	public ResponseEntity<Address> getAddressById(@PathVariable UUID userId) {
 		return userAddressService.fetchAddressById(userId);
 	}
 
 	@PutMapping(path = "/address/{userId}")
-	public ResponseEntity<UserAddress> updateAddress(@PathVariable UUID userId, @RequestBody UserAddress user) {
+	public ResponseEntity<Address> updateAddress(@PathVariable UUID userId, @RequestBody Address user) {
 		return userAddressService.updateAddress(userId, user);
 	}
 	

@@ -1,13 +1,13 @@
 package com.spring.rest.model;
 
+import java.util.Set;
 import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,22 +19,17 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "carts")
-public class UserCart {
+@Table(name = "categories")
+public class Category {
 
 	@Id
 	@GeneratedValue
-	private UUID cartId;
+	private UUID categoryId;
 	
 	@Column(nullable = false)
-	private int quantity;
+	private String categoryName;
 	
-	@OneToOne(mappedBy = "cart")
-	@JsonIgnoreProperties("cart")
-	private CustomUser user;
-	
-	@OneToOne(mappedBy = "cart")
-	@JsonIgnoreProperties("cart")
-	private Product product;
-	
+	@OneToMany(mappedBy = "category")
+	@JsonIgnoreProperties("category")
+	private Set<Product> products;
 }

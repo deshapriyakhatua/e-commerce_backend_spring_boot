@@ -8,20 +8,20 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.spring.rest.model.CustomUser;
+import com.spring.rest.model.User;
 import com.spring.rest.model.CustomUserDetails;
-import com.spring.rest.repository.CustomUserRepository;
+import com.spring.rest.repository.UserRepository;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
 	@Autowired
-	CustomUserRepository customUserRepository;
+	UserRepository customUserRepository;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-		Optional<CustomUser> customUser = customUserRepository.findByEmail(username);
+		Optional<User> customUser = customUserRepository.findByEmail(username);
 		return customUser.map(CustomUserDetails::new)
 				.orElseThrow(() -> new UsernameNotFoundException("User not found" + username));
 

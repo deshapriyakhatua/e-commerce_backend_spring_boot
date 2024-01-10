@@ -1,13 +1,14 @@
 package com.spring.rest.model;
 
+import java.util.Set;
 import java.util.UUID;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,16 +19,18 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserAddress {
+@Table(name = "roles")
+public class Roles {
 
 	@Id
 	@GeneratedValue
-	private UUID id;
+	private UUID roleId;
 	
-	private String city;
+	@Column(unique = true, nullable = false)
+	private String roleName;
 	
-	@OneToOne(mappedBy = "address")
-	@JsonIgnoreProperties("address")
-	private CustomUser user;
+	@ManyToMany(mappedBy = "roles")
+	@JsonIgnoreProperties("roles")
+	private Set<User> users;
 	
 }

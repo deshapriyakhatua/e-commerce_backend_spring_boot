@@ -5,10 +5,11 @@ import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import com.spring.rest.model.CustomUser;
+
+import com.spring.rest.model.Roles;
 
 @Repository
-public interface CustomUserRepository extends JpaRepository<CustomUser, UUID> {
+public interface RolesRepository extends JpaRepository<Roles, UUID> {
 
-	Optional<CustomUser> findByEmail(String email);
+	Optional<Roles> findByRoleName(String roleName);
 }

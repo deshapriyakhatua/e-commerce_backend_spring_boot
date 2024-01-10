@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring.rest.model.CustomUser;
+import com.spring.rest.model.User;
 import com.spring.rest.model.CustomUserDetails;
 import com.spring.rest.model.JwtRequest;
 import com.spring.rest.model.JwtResponse;
@@ -23,7 +23,7 @@ public class AuthController {
 	private AuthService authService;
 
 	@PostMapping("/signUp")
-	public ResponseEntity<Object> signUp(@RequestBody CustomUser customUser) {
+	public ResponseEntity<Object> signUp(@RequestBody User customUser) {
 
 		return authService.signUp(customUser);
 	}

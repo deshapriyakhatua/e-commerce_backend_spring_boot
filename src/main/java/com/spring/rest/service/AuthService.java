@@ -13,22 +13,22 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.spring.rest.exception.InvalidCredentialsException;
 import com.spring.rest.jwt.JwtHelper;
-import com.spring.rest.model.CustomUser;
+import com.spring.rest.model.User;
 import com.spring.rest.model.JwtRequest;
 import com.spring.rest.model.JwtResponse;
 import com.spring.rest.model.MyExceptionDetails;
-import com.spring.rest.model.UserRoles;
-import com.spring.rest.repository.CustomUserRepository;
-import com.spring.rest.repository.UserRolesRepository;
+import com.spring.rest.model.Roles;
+import com.spring.rest.repository.UserRepository;
+import com.spring.rest.repository.RolesRepository;
 
 @Service
 public class AuthService {
 
 	@Autowired
-	private CustomUserRepository customUserRepository;
+	private UserRepository customUserRepository;
 	
 	@Autowired
-	private UserRolesRepository userRolesRepository;
+	private RolesRepository userRolesRepository;
 
 	@Autowired
 	private AuthenticationProvider authenticationProvider;
@@ -39,31 +39,34 @@ public class AuthService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	public ResponseEntity<Object> signUp(CustomUser customUser) {
-
+	public ResponseEntity<Object> signUp(User customUser) {
+		System.out.println(1);
 		if(customUser.getPassword().length() == 0) {
 			return new ResponseEntity<>(new MyExceptionDetails("Empty password field !","uri=/auth/signUp"), HttpStatus.BAD_REQUEST);
 		}
 		
 		customUser.setPassword(passwordEncoder.encode(customUser.getPassword()));
-		Optional<CustomUser> optionalUser = customUserRepository.findByEmail(customUser.getEmail());
-		
-		if(!optionalUser.isPresent()) {
-			
-			Set<UserRoles> roles = customUser.getRoles();
-			Set<UserRoles> newRoles = new HashSet<>();
-				
-			for(UserRoles role : roles) {
-				newRoles.add( userRolesRepository.findByRoleName(role.getRoleName()).get() );
-			}
-			
-			customUser.setRoles(newRoles);
-			customUserRepository.save(customUser);
-		}
-		else {
+		Optional<User> optionalUser = customUserRepository.findByEmail(customUser.getEmail());
+		System.out.println(10);
+		if(optionalUser.isPresent()) {
 			return new ResponseEntity<>(new MyExceptionDetails("User already registered !",HttpStatus.BAD_REQUEST.toString()), HttpStatus.BAD_REQUEST);
 		}
+			
+		Set<Roles> roles = customUser.getRoles();
+		Set<Roles> newRoles = new HashSet<>();
+			
+		for(Roles role : roles) {
+			Optional<Roles> optionalRole = userRolesRepository.findByRoleName(role.getRoleName());
+			if(optionalRole.isEmpty()) {
+				return new ResponseEntity<>(new MyExceptionDetails("User Role '" + role.getRoleName() + "' Not Available !", HttpStatus.BAD_REQUEST.toString()), HttpStatus.BAD_REQUEST);
+			}
+			newRoles.add( optionalRole.get() );
+		}
 		
+		customUser.setRoles(newRoles);
+		customUserRepository.save(customUser);
+		
+		System.out.println(100);
 		String token = helper.generateToken(customUser.getEmail());
 
 		JwtResponse jwtResponse = new JwtResponse();

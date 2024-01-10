@@ -8,25 +8,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.spring.rest.model.UserProfile;
-import com.spring.rest.repository.UserProfileRepository;
+import com.spring.rest.model.Profile;
+import com.spring.rest.repository.ProfileRepository;
 
 @Service
-public class UserProfileService {
+public class ProfileService {
 	
 	@Autowired
-	private UserProfileRepository userProfileRepository;
+	private ProfileRepository userProfileRepository;
 
 
 
-	public ResponseEntity<List<UserProfile>> fetchAllUsers() {
+	public ResponseEntity<List<Profile>> fetchAllUsers() {
 		return ResponseEntity.ok(userProfileRepository.findAll());
 	}
 	
 
-	public ResponseEntity<UserProfile> fetchUserById(UUID id) {
+	public ResponseEntity<Profile> fetchUserById(UUID id) {
 		
-		Optional<UserProfile> user = userProfileRepository.findById(id);
+		Optional<Profile> user = userProfileRepository.findById(id);
 		if (user.isPresent()) {
 			return ResponseEntity.ok(user.get());
 		} else {
@@ -36,16 +36,16 @@ public class UserProfileService {
 	}
 
 	
-	public ResponseEntity<UserProfile> updateUser(UUID id, UserProfile updatedUser) {
+	public ResponseEntity<Profile> updateUser(UUID id, Profile updatedUser) {
 		
-		Optional<UserProfile> user = userProfileRepository.findById(id);
+		Optional<Profile> user = userProfileRepository.findById(id);
 		if (!user.isPresent()) {
 			return ResponseEntity.notFound().build();
 		}
-		UserProfile existingUser = user.get();
+		Profile existingUser = user.get();
 		existingUser.setName(updatedUser.getName());
 		existingUser.setPhone(updatedUser.getPhone());
-		UserProfile savedEntity = userProfileRepository.save(existingUser);
+		Profile savedEntity = userProfileRepository.save(existingUser);
 		return ResponseEntity.ok(savedEntity);
 	}
 

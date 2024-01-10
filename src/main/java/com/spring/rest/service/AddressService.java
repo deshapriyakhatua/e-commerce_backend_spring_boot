@@ -7,25 +7,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.spring.rest.model.UserAddress;
-import com.spring.rest.repository.UserAddressRepository;
+import com.spring.rest.model.Address;
+import com.spring.rest.repository.AddressRepository;
 
 @Service
-public class UserAddressService {
+public class AddressService {
 
 	@Autowired
-	private UserAddressRepository userAddressRepository;
+	private AddressRepository userAddressRepository;
 
 
 
-	public ResponseEntity<List<UserAddress>> fetchAllAddresses() {
+	public ResponseEntity<List<Address>> fetchAllAddresses() {
 		return ResponseEntity.ok(userAddressRepository.findAll());
 	}
 	
 
-	public ResponseEntity<UserAddress> fetchAddressById(UUID id) {
+	public ResponseEntity<Address> fetchAddressById(UUID id) {
 		
-		Optional<UserAddress> user = userAddressRepository.findById(id);
+		Optional<Address> user = userAddressRepository.findById(id);
 		if (user.isPresent()) {
 			return ResponseEntity.ok(user.get());
 		} else {
@@ -35,15 +35,15 @@ public class UserAddressService {
 	}
 
 	
-	public ResponseEntity<UserAddress> updateAddress(UUID id, UserAddress updatedAddress) {
+	public ResponseEntity<Address> updateAddress(UUID id, Address updatedAddress) {
 		
-		Optional<UserAddress> address = userAddressRepository.findById(id);
+		Optional<Address> address = userAddressRepository.findById(id);
 		if (!address.isPresent()) {
 			return ResponseEntity.notFound().build();
 		}
-		UserAddress existingAddress = address.get();
+		Address existingAddress = address.get();
 		existingAddress.setCity(updatedAddress.getCity());
-		UserAddress savedEntity = userAddressRepository.save(existingAddress);
+		Address savedEntity = userAddressRepository.save(existingAddress);
 		return ResponseEntity.ok(savedEntity);
 	}
 

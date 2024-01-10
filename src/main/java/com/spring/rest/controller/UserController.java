@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.spring.rest.model.CustomUser;
+import com.spring.rest.model.User;
 import com.spring.rest.service.UserService;
 
 @RestController
@@ -19,12 +19,12 @@ public class UserController {
 	UserService userService;
 	
 	@GetMapping("/user/{userName}")
-	public ResponseEntity<CustomUser> getRole(@PathVariable String userName) {
+	public ResponseEntity<User> getRole(@PathVariable String userName) {
 		return userService.getUser(userName);
 	}
 	
 	@GetMapping("/users")
-	public ResponseEntity<List<CustomUser>> getRoles() {
+	public ResponseEntity<List<User>> getRoles() {
 		return userService.getUsers();
 	}
 	
