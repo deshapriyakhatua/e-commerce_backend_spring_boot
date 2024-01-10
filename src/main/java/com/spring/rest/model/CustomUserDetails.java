@@ -1,8 +1,9 @@
 package com.spring.rest.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
+//import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,10 +17,12 @@ public class CustomUserDetails implements UserDetails {
 	private String password;
 	private List<GrantedAuthority> authorities;
 
-	public CustomUserDetails(User customUser) {
-		email = customUser.getEmail();
-		password = customUser.getPassword();
-		authorities = customUser.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getRoleName())).collect(Collectors.toList());
+	public CustomUserDetails(User user) {
+		email = user.getEmail();
+		password = user.getPassword();
+		authorities = new ArrayList<>();
+		authorities.add( new SimpleGrantedAuthority(user.getRole().getRoleName()));
+		//authorities = customUser.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getRoleName())).collect(Collectors.toList());
 	}
 
 	@Override

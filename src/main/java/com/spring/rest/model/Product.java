@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -39,6 +40,9 @@ public class Product {
 	@Column(nullable = true)
 	private String description;
 	
+	@Column(nullable = true)
+	private String specification;
+	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "category_id")
 	@JsonIgnoreProperties("products")
@@ -47,5 +51,13 @@ public class Product {
 	@ManyToMany(mappedBy = "products")
 	@JsonIgnoreProperties("products")
 	private Set<Cart> carts;
+	
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JsonIgnoreProperties("product")
+	private Set<Reviews> reviews;
+	
+	@ManyToMany(mappedBy = "products")
+	@JsonIgnoreProperties("products")
+	private Set<Orders> orders;
 	
 }

@@ -1,8 +1,6 @@
 package com.spring.rest.service;
 
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,15 +9,16 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import com.spring.rest.exception.InvalidCredentialsException;
 import com.spring.rest.jwt.JwtHelper;
-import com.spring.rest.model.User;
 import com.spring.rest.model.JwtRequest;
 import com.spring.rest.model.JwtResponse;
 import com.spring.rest.model.MyExceptionDetails;
 import com.spring.rest.model.Role;
-import com.spring.rest.repository.UserRepository;
+import com.spring.rest.model.User;
 import com.spring.rest.repository.RoleRepository;
+import com.spring.rest.repository.UserRepository;
 
 @Service
 public class AuthService {
@@ -52,18 +51,17 @@ public class AuthService {
 			return new ResponseEntity<>(new MyExceptionDetails("User already registered !",HttpStatus.BAD_REQUEST.toString()), HttpStatus.BAD_REQUEST);
 		}
 			
-		Set<Role> roles = customUser.getRoles();
-		Set<Role> newRoles = new HashSet<>();
+		Role role = customUser.getRole();
+		Role newRole = new Role();
 			
-		for(Role role : roles) {
-			Optional<Role> optionalRole = userRolesRepository.findByRoleName(role.getRoleName());
-			if(optionalRole.isEmpty()) {
-				return new ResponseEntity<>(new MyExceptionDetails("User Role '" + role.getRoleName() + "' Not Available !", HttpStatus.BAD_REQUEST.toString()), HttpStatus.BAD_REQUEST);
-			}
-			newRoles.add( optionalRole.get() );
+		Optional<Role> optionalRole = userRolesRepository.findByRoleName(role.getRoleName());
+		if(optionalRole.isEmpty()) {
+			return new ResponseEntity<>(new MyExceptionDetails("User Role '" + role.getRoleName() + "' Not Available !", HttpStatus.BAD_REQUEST.toString()), HttpStatus.BAD_REQUEST);
 		}
+		newRole = optionalRole.get();
 		
-		customUser.setRoles(newRoles);
+		
+		customUser.setRole(newRole);
 		customUserRepository.save(customUser);
 		
 		System.out.println(100);
