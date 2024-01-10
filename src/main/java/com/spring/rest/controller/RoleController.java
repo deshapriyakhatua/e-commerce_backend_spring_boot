@@ -11,41 +11,41 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.spring.rest.model.Roles;
-import com.spring.rest.service.RolesService;
+import com.spring.rest.model.Role;
+import com.spring.rest.service.RoleService;
 
 @RestController
 @RequestMapping("/tester")
 public class RoleController {
 
 	@Autowired
-	private final RolesService userRolesService;
+	private final RoleService userRolesService;
 
-	public RoleController(RolesService userRolesService) {
+	public RoleController(RoleService userRolesService) {
 		this.userRolesService = userRolesService;
 	}
 	
 	@PostMapping("/role")
-	public ResponseEntity<Roles> saveRole(@RequestBody Roles userRole) {
-		Roles newRoles = userRolesService.saveRole(userRole);
+	public ResponseEntity<Role> saveRole(@RequestBody Role userRole) {
+		Role newRoles = userRolesService.saveRole(userRole);
 		return ResponseEntity.ok(newRoles);
 	}
 	
 	@PostMapping("/roles")
-	public ResponseEntity<List<Roles>> saveRoles(@RequestBody Set<Roles> userRoles) {
-		List<Roles> newRoles = userRolesService.saveRoles(userRoles);
+	public ResponseEntity<List<Role>> saveRoles(@RequestBody Set<Role> userRoles) {
+		List<Role> newRoles = userRolesService.saveRoles(userRoles);
 		return ResponseEntity.ok(newRoles);
 	}
 	
 	@GetMapping("/role/{roleName}")
-	public ResponseEntity<Roles> getRole(@PathVariable String roleName) {
-		Roles newRoles = userRolesService.getRole(roleName);
+	public ResponseEntity<Role> getRole(@PathVariable String roleName) {
+		Role newRoles = userRolesService.getRole(roleName);
 		return ResponseEntity.ok(newRoles);
 	}
 	
 	@GetMapping("/roles")
-	public ResponseEntity<List<Roles>> getRoles() {
-		List<Roles> newRoles = userRolesService.getRoles();
+	public ResponseEntity<List<Role>> getRoles() {
+		List<Role> newRoles = userRolesService.getRoles();
 		return ResponseEntity.ok(newRoles);
 	}
 }

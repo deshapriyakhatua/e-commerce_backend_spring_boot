@@ -46,7 +46,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id")
             )
 	@JsonIgnoreProperties("users")
-	private Set<Roles> roles;
+	private Set<Role> roles;
 	
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "profile_id")

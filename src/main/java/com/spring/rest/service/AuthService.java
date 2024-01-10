@@ -17,9 +17,9 @@ import com.spring.rest.model.User;
 import com.spring.rest.model.JwtRequest;
 import com.spring.rest.model.JwtResponse;
 import com.spring.rest.model.MyExceptionDetails;
-import com.spring.rest.model.Roles;
+import com.spring.rest.model.Role;
 import com.spring.rest.repository.UserRepository;
-import com.spring.rest.repository.RolesRepository;
+import com.spring.rest.repository.RoleRepository;
 
 @Service
 public class AuthService {
@@ -28,7 +28,7 @@ public class AuthService {
 	private UserRepository customUserRepository;
 	
 	@Autowired
-	private RolesRepository userRolesRepository;
+	private RoleRepository userRolesRepository;
 
 	@Autowired
 	private AuthenticationProvider authenticationProvider;
@@ -52,11 +52,11 @@ public class AuthService {
 			return new ResponseEntity<>(new MyExceptionDetails("User already registered !",HttpStatus.BAD_REQUEST.toString()), HttpStatus.BAD_REQUEST);
 		}
 			
-		Set<Roles> roles = customUser.getRoles();
-		Set<Roles> newRoles = new HashSet<>();
+		Set<Role> roles = customUser.getRoles();
+		Set<Role> newRoles = new HashSet<>();
 			
-		for(Roles role : roles) {
-			Optional<Roles> optionalRole = userRolesRepository.findByRoleName(role.getRoleName());
+		for(Role role : roles) {
+			Optional<Role> optionalRole = userRolesRepository.findByRoleName(role.getRoleName());
 			if(optionalRole.isEmpty()) {
 				return new ResponseEntity<>(new MyExceptionDetails("User Role '" + role.getRoleName() + "' Not Available !", HttpStatus.BAD_REQUEST.toString()), HttpStatus.BAD_REQUEST);
 			}

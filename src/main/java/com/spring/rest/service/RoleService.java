@@ -7,33 +7,33 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.spring.rest.model.Roles;
-import com.spring.rest.repository.RolesRepository;
+import com.spring.rest.model.Role;
+import com.spring.rest.repository.RoleRepository;
 
 @Service
-public class RolesService {
+public class RoleService {
 
 	@Autowired
-	private RolesRepository userRolesRepository;
+	private RoleRepository userRolesRepository;
 	
-	public List<Roles> saveRoles(Set<Roles> roles){
+	public List<Role> saveRoles(Set<Role> roles){
 		return userRolesRepository.saveAll(roles);
 	}
 	
-	public Roles saveRole(Roles role){
+	public Role saveRole(Role role){
 		return userRolesRepository.save(role);
 	}
 	
-	public List<Roles> getRoles(){
+	public List<Role> getRoles(){
 		return userRolesRepository.findAll();
 	}
 	
-	public Roles getRole(String roleName){
-		Optional<Roles> result = userRolesRepository.findByRoleName(roleName);
+	public Role getRole(String roleName){
+		Optional<Role> result = userRolesRepository.findByRoleName(roleName);
 		if(result.isPresent()) {
 			return result.get();
 		}else {
-			return new Roles();
+			return new Role();
 		}
 	}
 }

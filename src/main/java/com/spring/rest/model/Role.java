@@ -20,7 +20,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "roles")
-public class Roles {
+public class Role {
 
 	@Id
 	@GeneratedValue
