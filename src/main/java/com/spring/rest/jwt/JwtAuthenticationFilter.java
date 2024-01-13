@@ -40,7 +40,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 		String authorizationHeader = request.getHeader("Authorization");
 
-		if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer")) {
+		if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer") || authorizationHeader.length() < 10) {
 
 			sendException(response, request, HttpStatus.BAD_REQUEST.value(),
 					"Access Denied ! No Authorization key in Header !");
@@ -103,7 +103,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	@Override
 	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
 
-		return request.getRequestURI().startsWith("/auth/") || request.getRequestURI().startsWith("/tester/");
+		return request.getRequestURI().startsWith("/auth/sign") || request.getRequestURI().startsWith("/tester/");
 
 	}
 
