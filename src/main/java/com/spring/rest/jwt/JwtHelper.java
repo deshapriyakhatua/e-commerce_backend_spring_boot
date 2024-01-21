@@ -16,7 +16,7 @@ import io.jsonwebtoken.security.Keys;
 public class JwtHelper {
 
 	private final String SECRET = "zASFaliACAsfaSDFAnteCASDFASFalkiASFDAFltqwiASFAaSgDhAbAhDqSCzSDtFADrCVSwGCFeVtADXrCm";
-	public final long JWT_TOKEN_VALIDITY = 10 * 60 * 60 * 1000;
+	public final long JWT_TOKEN_VALIDITY = 24 * 60 * 60 * 1000;
 
 	public String generateToken(String userName) {
 		

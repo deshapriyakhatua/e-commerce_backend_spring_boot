@@ -3,7 +3,6 @@ package com.spring.rest.model;
 import java.util.Set;
 import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,7 +12,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,10 +32,6 @@ public class Cart {
 	
 	@Column(nullable = false)
 	private int quantity;
-	
-	@OneToOne(mappedBy = "cart")
-	@JsonIgnoreProperties("cart")
-	private User user;
 	
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(

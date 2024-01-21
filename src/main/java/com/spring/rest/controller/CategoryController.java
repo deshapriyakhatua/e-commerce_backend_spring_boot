@@ -28,7 +28,7 @@ public class CategoryController {
 	}
 
 	@PostMapping("/category")
-	public ResponseEntity<Category> saveUser(@RequestBody Category category) {
+	public ResponseEntity<Object> saveUser(@RequestBody Category category) {
 		return categoryService.saveCategory(category);
 	}
 	

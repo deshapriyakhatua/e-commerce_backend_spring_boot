@@ -34,7 +34,7 @@ public class Orders {
 	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
-	@JsonIgnoreProperties({"order","hibernateLazyInitializer", "handler"})
+	@JsonIgnoreProperties({"orders","hibernateLazyInitializer", "handler"})
 	private User user;
 	
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

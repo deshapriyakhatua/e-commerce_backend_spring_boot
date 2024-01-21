@@ -5,9 +5,11 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.spring.rest.model.Category;
+import com.spring.rest.model.MyExceptionDetails;
 import com.spring.rest.repository.CategoryRepository;
 
 @Service
@@ -20,8 +22,28 @@ public class CategoryService {
 		return ResponseEntity.ok(categoryRepository.saveAll(categories));
 	}
 	
-	public ResponseEntity<Category> saveCategory(Category category){
+	public ResponseEntity<Object> saveCategory(Category category){
+		
+		if(category.getCategoryName() == null) {
+			return new ResponseEntity<>(new MyExceptionDetails("Category name is null !",HttpStatus.BAD_REQUEST.toString()), HttpStatus.BAD_REQUEST);
+		}else {
+			Optional<Category> result = categoryRepository.findByCategoryName(category.getCategoryName());
+			if(!result.isEmpty()) {
+				return new ResponseEntity<>(new MyExceptionDetails("Category name is already listed !",HttpStatus.BAD_REQUEST.toString()), HttpStatus.BAD_REQUEST);
+			}
+		}
+		if(category.getParentId().getCategoryName() == null) {
+			category.setParentId(null);
+		}else {
+			Optional<Category> result = categoryRepository.findByCategoryName(category.getParentId().getCategoryName());
+			if(result.isEmpty()) {
+				return ResponseEntity.badRequest().build();
+			}
+			category.setParentId(result.get());
+		}
+		
 		return ResponseEntity.ok(categoryRepository.save(category));
+		
 	}
 	
 	public ResponseEntity<Category> updateCategory(Category category){

@@ -24,7 +24,7 @@ import com.spring.rest.repository.UserRepository;
 public class AuthService {
 
 	@Autowired
-	private UserRepository customUserRepository;
+	private UserRepository userRepository;
 	
 	@Autowired
 	private RoleRepository userRolesRepository;
@@ -38,38 +38,40 @@ public class AuthService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	public ResponseEntity<Object> signUp(User customUser) {
-		System.out.println(1);
-		if(customUser.getPassword().length() == 0) {
+	public ResponseEntity<Object> signUp(User user) {
+		
+		if(user.getPassword().length() == 0) {
 			return new ResponseEntity<>(new MyExceptionDetails("Empty password field !","uri=/auth/signUp"), HttpStatus.BAD_REQUEST);
 		}
 		
-		customUser.setPassword(passwordEncoder.encode(customUser.getPassword()));
-		Optional<User> optionalUser = customUserRepository.findByEmail(customUser.getEmail());
-		System.out.println(10);
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		Optional<User> optionalUser = userRepository.findByEmail(user.getEmail());
+		
 		if(optionalUser.isPresent()) {
 			return new ResponseEntity<>(new MyExceptionDetails("User already registered !",HttpStatus.BAD_REQUEST.toString()), HttpStatus.BAD_REQUEST);
 		}
-			
-		Role role = customUser.getRole();
+		
+		// validate Role
+		Role role = user.getRole();
 		Role newRole = new Role();
 			
 		Optional<Role> optionalRole = userRolesRepository.findByRoleName(role.getRoleName());
 		if(optionalRole.isEmpty()) {
 			return new ResponseEntity<>(new MyExceptionDetails("User Role '" + role.getRoleName() + "' Not Available !", HttpStatus.BAD_REQUEST.toString()), HttpStatus.BAD_REQUEST);
 		}
+		
 		newRole = optionalRole.get();
+		user.setRole(newRole);
+		
+		// 
+		userRepository.save(user);
 		
 		
-		customUser.setRole(newRole);
-		customUserRepository.save(customUser);
-		
-		System.out.println(100);
-		String token = helper.generateToken(customUser.getEmail());
+		String token = helper.generateToken(user.getEmail());
 
 		JwtResponse jwtResponse = new JwtResponse();
 		jwtResponse.setJwtToken(token);
-		jwtResponse.setUserName(customUser.getEmail());
+		jwtResponse.setUserName(user.getEmail());
 		return new ResponseEntity<>(jwtResponse, HttpStatus.OK);
 
 	}

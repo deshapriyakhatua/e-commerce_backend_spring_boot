@@ -4,6 +4,8 @@ package com.spring.rest.model;
 import java.util.Set;
 import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -20,13 +22,17 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 @Table(name = "users")
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(value = Include.NON_DEFAULT)
 public class User {
 
 	@Id
@@ -45,26 +51,35 @@ public class User {
 	@JsonIgnoreProperties("users")
 	private Role role;
 	
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "profile_id")
-	@JsonIgnoreProperties({"user","hibernateLazyInitializer", "handler"})
-	private Profile profile;
+	@Column(nullable = true)
+	private long phone;
+
+	@Column(nullable = true)
+	private String name;
 	
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JsonIgnoreProperties("user")
-	private Set<Address> addresses;
+	@Column(nullable = true)
+	private String city;
 	
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "cart_id")
-	@JsonIgnoreProperties({"user","hibernateLazyInitializer", "handler"})
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private Cart cart;
 	
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	@JsonIgnoreProperties("user")
 	private Set<Reviews> reviews;
 	
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	@JsonIgnoreProperties({"user","hibernateLazyInitializer", "handler"})
-	private Set<Orders> order;
+	private Set<Orders> orders;
+
+	public User( String email, String password, Role role) {
+		super();
+		this.email = email;
+		this.password = password;	
+		this.role = role;
+	}
+	
+	
 	
 }

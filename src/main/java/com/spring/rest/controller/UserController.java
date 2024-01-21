@@ -19,12 +19,12 @@ public class UserController {
 	UserService userService;
 	
 	@GetMapping("/user/{userName}")
-	public ResponseEntity<User> getRole(@PathVariable String userName) {
+	public ResponseEntity<User> getUser(@PathVariable String userName) {
 		return userService.getUser(userName);
 	}
 	
 	@GetMapping("/users")
-	public ResponseEntity<List<User>> getRoles() {
+	public ResponseEntity<List<User>> getUsers() {
 		return userService.getUsers();
 	}
 	
