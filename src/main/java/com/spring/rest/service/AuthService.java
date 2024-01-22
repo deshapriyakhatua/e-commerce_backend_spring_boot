@@ -52,12 +52,11 @@ public class AuthService {
 		}
 		
 		// validate Role
-		Role role = user.getRole();
 		Role newRole = new Role();
 			
-		Optional<Role> optionalRole = userRolesRepository.findByRoleName(role.getRoleName());
+		Optional<Role> optionalRole = userRolesRepository.findByRoleName("ROLE_USER");
 		if(optionalRole.isEmpty()) {
-			return new ResponseEntity<>(new MyExceptionDetails("User Role '" + role.getRoleName() + "' Not Available !", HttpStatus.BAD_REQUEST.toString()), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new MyExceptionDetails("User Role 'ROLE_USER' Not Available !", HttpStatus.BAD_REQUEST.toString()), HttpStatus.BAD_REQUEST);
 		}
 		
 		newRole = optionalRole.get();
