@@ -73,7 +73,8 @@ public class SecurityConfig {
 
 				})
 				.authorizeHttpRequests((authorize) -> authorize.requestMatchers("/admin/**").hasRole("ADMIN")
-						.requestMatchers("/auth/**").permitAll().requestMatchers("/tester/**").permitAll().anyRequest().authenticated())
+						.requestMatchers("/seller/**").hasAnyRole("SELLER","ADMIN")
+						.requestMatchers("/auth/**").permitAll().anyRequest().authenticated())
 				.exceptionHandling(ex -> ex.authenticationEntryPoint(jwtAuthenticationEntryPoint))
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 

@@ -16,12 +16,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 @Table(name = "roles")
 public class Role {
 
@@ -35,5 +37,10 @@ public class Role {
 	@OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JsonIgnoreProperties("role")
 	private Set<User> users;
+
+	public Role(String roleName) {
+		super();
+		this.roleName = roleName;
+	}
 	
 }

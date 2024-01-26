@@ -32,16 +32,7 @@ public class CategoryService {
 				return new ResponseEntity<>(new MyExceptionDetails("Category name is already listed !",HttpStatus.BAD_REQUEST.toString()), HttpStatus.BAD_REQUEST);
 			}
 		}
-		if(category.getParentId().getCategoryName() == null) {
-			category.setParentId(null);
-		}else {
-			Optional<Category> result = categoryRepository.findByCategoryName(category.getParentId().getCategoryName());
-			if(result.isEmpty()) {
-				return ResponseEntity.badRequest().build();
-			}
-			category.setParentId(result.get());
-		}
-		
+				
 		return ResponseEntity.ok(categoryRepository.save(category));
 		
 	}
@@ -59,6 +50,9 @@ public class CategoryService {
 	
 	public ResponseEntity<List<Category>> getCategories(){
 		return ResponseEntity.ok(categoryRepository.findAll());
+	}
+	public ResponseEntity<List<Category>> getAllCategories(){
+		return ResponseEntity.ok(categoryRepository.getAllCategories());
 	}
 	
 	public ResponseEntity<Category> getCategory(UUID categoryId){

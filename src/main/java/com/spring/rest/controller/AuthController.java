@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.spring.rest.model.User;
 import com.spring.rest.model.JwtRequest;
-import com.spring.rest.model.JwtResponse;
 import com.spring.rest.service.AuthService;
 
 @RestController
@@ -25,7 +24,7 @@ public class AuthController {
 	}
 
 	@PostMapping("/signIn")
-	public ResponseEntity<JwtResponse> signIn(@RequestBody JwtRequest jwtRequest) {
+	public ResponseEntity<Object> signIn(@RequestBody JwtRequest jwtRequest) {
 
 		return authService.signIn(jwtRequest);
 
