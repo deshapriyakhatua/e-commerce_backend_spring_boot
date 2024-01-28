@@ -72,6 +72,10 @@ public class User {
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	@JsonIgnoreProperties({"user","hibernateLazyInitializer", "handler"})
 	private Set<Orders> orders;
+	
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	@JsonIgnoreProperties("user")
+	private Set<Product> products;
 
 	public User( String email, String password, Role role) {
 		super();

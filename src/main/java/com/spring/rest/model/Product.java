@@ -3,6 +3,9 @@ package com.spring.rest.model;
 import java.util.Set;
 import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,6 +28,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "products")
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(value = Include.NON_DEFAULT)
 public class Product {
 
 	@Id
@@ -47,19 +52,28 @@ public class Product {
 	private String specification;
 	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name = "category_id")
+	@JoinColumn(name = "category_id", nullable = false)
 	@JsonIgnoreProperties("products")
 	private Category category;
 	
-	@ManyToMany(mappedBy = "products")
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JsonIgnoreProperties("product")
+	private Set<Image> images;
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "user_id", nullable = false)
+	@JsonIgnoreProperties("products")
+	private User user;
+	
+	@ManyToMany(mappedBy = "products", fetch = FetchType.LAZY)
 	@JsonIgnoreProperties("products")
 	private Set<Cart> carts;
 	
-	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JsonIgnoreProperties("product")
 	private Set<Reviews> reviews;
 	
-	@ManyToMany(mappedBy = "products")
+	@ManyToMany(mappedBy = "products", fetch = FetchType.LAZY)
 	@JsonIgnoreProperties("products")
 	private Set<Orders> orders;
 	

@@ -7,6 +7,8 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.spring.rest.model.Category;
@@ -14,6 +16,7 @@ import com.spring.rest.model.MyExceptionDetails;
 import com.spring.rest.model.Product;
 import com.spring.rest.repository.CategoryRepository;
 import com.spring.rest.repository.ProductRepository;
+import com.spring.rest.repository.UserRepository;
 
 @Service
 public class ProductService {
@@ -23,6 +26,10 @@ public class ProductService {
 	
 	@Autowired
 	private CategoryRepository categoryRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
+	
 	
 	public ResponseEntity<List<Product>> saveProducts(Set<Product> products){
 		return ResponseEntity.ok(productRepository.saveAll(products));
@@ -41,6 +48,9 @@ public class ProductService {
 			return new ResponseEntity<>(new MyExceptionDetails("'" + category.getCategoryName() + "' is not available for now try with another !", "uri=/product/product"), HttpStatus.BAD_REQUEST);
 		}
 		product.setCategory(optionalCategory.get());
+		product.getImages().forEach((elem)->{elem.setProduct(product);});
+		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+		product.setUser(userRepository.findByEmail(loggedInUser.getName()).get());
 		
 		return ResponseEntity.ok(productRepository.save(product));
 	}
@@ -59,7 +69,8 @@ public class ProductService {
 	}
 	
 	public ResponseEntity<List<Product>> getProducts(){
-		return ResponseEntity.ok(productRepository.findAll());
+		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+		return ResponseEntity.ok(productRepository.findByUser(userRepository.findByEmail(loggedInUser.getName()).get()));
 	}
 	
 	public ResponseEntity<Product> getProduct(UUID productId){

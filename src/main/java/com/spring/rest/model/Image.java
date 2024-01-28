@@ -24,31 +24,21 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "reviews")
+@Table(name = "images")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(value = Include.NON_DEFAULT)
-public class Reviews {
-
+public class Image {
+	
 	@Id
 	@GeneratedValue
-	private UUID reviewId;
-	
-	@Column(nullable = true)
-	private String comment;
+	private UUID imageId;
 	
 	@Column(nullable = false)
-	private int rating;
+	private String url;
 	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "product_id")
-	@JsonIgnoreProperties({"reviews", "hibernateLazyInitializer", "handler"})
+	@JoinColumn(name = "product_id", nullable = false)
+	@JsonIgnoreProperties({"images", "hibernateLazyInitializer", "handler"})
 	private Product product;
-	
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
-	@JsonIgnoreProperties({"reviews", "hibernateLazyInitializer", "handler"})
-	private User user;
-	
-	
-	
+
 }
