@@ -69,6 +69,10 @@ public class Product {
 	@JsonIgnoreProperties("products")
 	private Set<Cart> carts;
 	
+	@ManyToMany(mappedBy = "products", fetch = FetchType.LAZY)
+	@JsonIgnoreProperties("products")
+	private Set<WishList> wishLists;
+	
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JsonIgnoreProperties("product")
 	private Set<Reviews> reviews;

@@ -65,6 +65,11 @@ public class User {
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private Cart cart;
 	
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "wishlist_id")
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	private WishList wishList;
+	
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	@JsonIgnoreProperties("user")
 	private Set<Reviews> reviews;

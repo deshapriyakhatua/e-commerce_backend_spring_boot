@@ -81,5 +81,11 @@ public class ProductService {
 			return ResponseEntity.notFound().build();
 		}
 	}
+
+	public ResponseEntity<List<Product>> getProductByCategory(String categoryName) {
+		Optional<Category> optionalCategory = categoryRepository.findByCategoryName(categoryName);
+		Category category = optionalCategory.get();
+		return new ResponseEntity<>(productRepository.findByCategory(category),HttpStatus.OK);
+	}
 	
 }

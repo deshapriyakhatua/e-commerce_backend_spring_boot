@@ -11,15 +11,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.spring.rest.model.Product;
 import com.spring.rest.model.User;
+import com.spring.rest.service.ProductService;
 import com.spring.rest.service.UserService;
 
 @RestController
-@RequestMapping("/account")
+@RequestMapping("/user")
 public class UserController {
 
 	@Autowired
 	UserService userService;
+	@Autowired
+	ProductService productService;
+	
+	// user details
 	
 	@GetMapping("/current_user")
 	public Object getCurretUser() {
@@ -33,20 +40,7 @@ public class UserController {
 		user.put("role", role.substring(1));
 		return user;
 	}
-	
-	@GetMapping("/is_seller")
-	public boolean isSeller() {
-		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
-		boolean isTrue = false;
-		for(GrantedAuthority gta : loggedInUser.getAuthorities()) {
-			if(gta.getAuthority().equals("ROLE_SELLER")) {
-				isTrue = true;
-				break;
-			}
-		}
-		return isTrue;
-	}
-	
+		
 	@GetMapping("/user/{userName}")
 	public ResponseEntity<User> getUser(@PathVariable String userName) {
 		return userService.getUser(userName);
@@ -55,6 +49,13 @@ public class UserController {
 	@GetMapping("/users")
 	public ResponseEntity<List<User>> getUsers() {
 		return userService.getUsers();
+	}
+	
+	// products 
+	
+	@GetMapping("products/{category}")
+	public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable String category){
+		return productService.getProductByCategory(category);
 	}
 	
 }
