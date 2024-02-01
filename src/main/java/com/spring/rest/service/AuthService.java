@@ -11,7 +11,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.spring.rest.exception.InvalidCredentialsException;
 import com.spring.rest.jwt.JwtHelper;
-import com.spring.rest.model.Cart;
 import com.spring.rest.model.JwtRequest;
 import com.spring.rest.model.JwtResponse;
 import com.spring.rest.model.MyExceptionDetails;
@@ -65,7 +64,6 @@ public class AuthService {
 		newRole = optionalRole.get();
 		user.setRole(newRole);
 		
-		user.setCart(new Cart());
 		
 		userRepository.save(user);
 		

@@ -14,9 +14,9 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -60,15 +60,13 @@ public class User {
 	@Column(nullable = true)
 	private String city;
 	
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "cart_id")
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-	private Cart cart;
+	@ManyToMany(mappedBy = "carts", fetch = FetchType.LAZY)
+	@JsonIgnoreProperties("carts")
+	private Set<Product> cart;
 	
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "wishlist_id")
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-	private WishList wishList;
+	@ManyToMany(mappedBy = "wishLists", fetch = FetchType.LAZY)
+	@JsonIgnoreProperties("wishLists")
+	private Set<Product> wishList;
 	
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	@JsonIgnoreProperties("user")
@@ -78,8 +76,8 @@ public class User {
 	@JsonIgnoreProperties({"user","hibernateLazyInitializer", "handler"})
 	private Set<Orders> orders;
 	
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-	@JsonIgnoreProperties("user")
+	@OneToMany(mappedBy = "seller", fetch = FetchType.LAZY)
+	@JsonIgnoreProperties("seller")
 	private Set<Product> products;
 
 	public User( String email, String password, Role role) {

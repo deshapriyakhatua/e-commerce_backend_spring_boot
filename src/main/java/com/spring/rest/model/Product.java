@@ -13,6 +13,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -61,17 +62,27 @@ public class Product {
 	private Set<Image> images;
 	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name = "user_id", nullable = false)
+	@JoinColumn(name = "seller_id", nullable = false)
 	@JsonIgnoreProperties("products")
-	private User user;
+	private User seller;
 	
-	@ManyToMany(mappedBy = "products", fetch = FetchType.LAZY)
-	@JsonIgnoreProperties("products")
-	private Set<Cart> carts;
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinTable(
+            name = "carts",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+            )
+	@JsonIgnoreProperties("cart")
+	private Set<User> carts;
 	
-	@ManyToMany(mappedBy = "products", fetch = FetchType.LAZY)
-	@JsonIgnoreProperties("products")
-	private Set<WishList> wishLists;
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinTable(
+            name = "wishlists",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+            )
+	@JsonIgnoreProperties("wishList")
+	private Set<User> wishLists;
 	
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JsonIgnoreProperties("product")

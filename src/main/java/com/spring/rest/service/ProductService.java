@@ -50,7 +50,7 @@ public class ProductService {
 		product.setCategory(optionalCategory.get());
 		product.getImages().forEach((elem)->{elem.setProduct(product);});
 		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
-		product.setUser(userRepository.findByEmail(loggedInUser.getName()).get());
+		product.setSeller(userRepository.findByEmail(loggedInUser.getName()).get());
 		
 		return ResponseEntity.ok(productRepository.save(product));
 	}
@@ -70,7 +70,7 @@ public class ProductService {
 	
 	public ResponseEntity<List<Product>> getProducts(){
 		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
-		return ResponseEntity.ok(productRepository.findByUser(userRepository.findByEmail(loggedInUser.getName()).get()));
+		return ResponseEntity.ok(productRepository.findBySeller(userRepository.findByEmail(loggedInUser.getName()).get()));
 	}
 	
 	public ResponseEntity<Product> getProduct(UUID productId){

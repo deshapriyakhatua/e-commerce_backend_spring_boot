@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import com.spring.rest.model.Cart;
 import com.spring.rest.model.Category;
 import com.spring.rest.model.Role;
 import com.spring.rest.model.User;
@@ -49,7 +48,6 @@ public class AppStartUpRunner implements CommandLineRunner{
 //		Optional<Role> optionalRole = userRolesRepository.findByRoleName("ROLE_ADMIN");
 //		Role role = optionalRole.get();
 //		user.setRole(role);
-//		user.setCart(new Cart());
 //		try {
 //			userRepository.save(user);
 //		} catch (Exception e) {
