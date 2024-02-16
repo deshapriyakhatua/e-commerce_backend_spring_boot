@@ -24,7 +24,7 @@ public class UserController {
 	@Autowired
 	ProductService productService;
 	
-	// user details
+	//  user details
 	
 	@GetMapping("/current_user")
 	public Object getCurretUser() {
