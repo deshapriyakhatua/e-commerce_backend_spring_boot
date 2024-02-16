@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.spring.rest.model.Category;
 import com.spring.rest.model.Product;
 import com.spring.rest.service.CategoryService;
@@ -46,12 +45,12 @@ public class SellerController {
 	}
 
 	@PostMapping("/product")
-	public ResponseEntity<Object> saveProduct(@RequestBody Product product) {
+	public ResponseEntity<?> saveProduct(@RequestBody Product product) {
 		return productService.saveProduct(product);
 	}
 	
 	@GetMapping("/products")
-	public ResponseEntity<List<Product>> getAllProducts() {
+	public ResponseEntity<List<?>> getAllProducts() {
 		return productService.getProducts();
 	}
 

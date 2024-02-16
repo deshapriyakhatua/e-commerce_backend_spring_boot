@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.spring.rest.model.Product;
 import com.spring.rest.model.User;
 import com.spring.rest.service.ProductService;
 import com.spring.rest.service.UserService;
@@ -54,7 +52,7 @@ public class UserController {
 	// products 
 	
 	@GetMapping("products/{category}")
-	public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable String category){
+	public ResponseEntity<?> getProductsByCategory(@PathVariable String category){
 		return productService.getProductByCategory(category);
 	}
 	

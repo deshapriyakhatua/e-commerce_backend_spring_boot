@@ -5,7 +5,6 @@ import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -41,16 +40,34 @@ public class Product {
 	private String title;
 	
 	@Column(nullable = false)
-	private Double price;
+	private double price;
 	
 	@Column(nullable = false)
-	private Double deliveryChrgs;
+	private double mrp;
+	
+	@Column(nullable = false)
+	private double deliveryChrgs;
 	
 	@Column(nullable = true)
 	private String description;
 	
 	@Column(nullable = true)
 	private String specification;
+	
+	@Column(nullable = true)
+	private double rating;
+	
+	@Column(nullable = true)
+	private int countRatings;
+	
+	@Column(nullable = true)
+	private int countReviews;
+	
+	@Column(nullable = true)
+	private int countOrders;
+	
+	@Column(nullable = false)
+	private boolean inStock;
 	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "category_id", nullable = false)
@@ -88,8 +105,25 @@ public class Product {
 	@JsonIgnoreProperties("product")
 	private Set<Reviews> reviews;
 	
-	@ManyToMany(mappedBy = "products", fetch = FetchType.LAZY)
-	@JsonIgnoreProperties("products")
+	@OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+	@JsonIgnoreProperties("product")
 	private Set<Orders> orders;
+
+	public Product(String title, double price, double mrp, double deliveryChrgs, double rating, int countRatings,
+			int countReviews, int countOrders, boolean inStock, Set<Image> images, User seller) {
+		super();
+		this.title = title;
+		this.price = price;
+		this.mrp = mrp;
+		this.deliveryChrgs = deliveryChrgs;
+		this.rating = rating;
+		this.countRatings = countRatings;
+		this.countReviews = countReviews;
+		this.countOrders = countOrders;
+		this.inStock = inStock;
+		this.seller = seller;
+	}
+	
+	
 	
 }

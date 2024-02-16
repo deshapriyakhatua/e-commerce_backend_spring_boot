@@ -1,7 +1,9 @@
 package com.spring.rest.model;
 
+import java.util.Set;
 import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,43 +24,35 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "orders")
-public class Orders {
+@Table(name = "address")
+public class Address {
 
 	@Id
 	@GeneratedValue
-	private UUID orderId;
+	private UUID addressId;
 	
 	@Column(nullable = false)
-	private String orderType;
+	private String locality;
 	
 	@Column(nullable = false)
-	private String status;
+	private int pin;
 	
 	@Column(nullable = false)
-	private double price;
+	private String District;
 	
 	@Column(nullable = false)
-	private double deliveryChrgs;
+	private String state;
 	
 	@Column(nullable = false)
-	private long phone;
+	private String landmark;
 	
-	@Column(nullable = false)
-	private long altPhone;
-	
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "address_id")
-	@JsonIgnoreProperties({"orders","hibernateLazyInitializer", "handler"})
-	private Address address;
-	
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
-	@JsonIgnoreProperties({"orders","hibernateLazyInitializer", "handler"})
+	@JsonIgnoreProperties("addresses")
 	private User user;
 	
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn( name = "product_id" )
-	@JsonIgnoreProperties({"orders","hibernateLazyInitializer", "handler"})
-	private Product product;
+	@OneToMany(mappedBy = "address", fetch = FetchType.LAZY)
+	@JsonIgnoreProperties({"address","hibernateLazyInitializer", "handler"})
+	private Set<Orders> orders;
+	
 }

@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
 import com.spring.rest.model.Category;
 import com.spring.rest.model.MyExceptionDetails;
 import com.spring.rest.model.Product;
@@ -35,11 +34,11 @@ public class ProductService {
 		return ResponseEntity.ok(productRepository.saveAll(products));
 	}
 	
-	public ResponseEntity<Object> saveProduct(Product product){
+	public ResponseEntity<?> saveProduct(Product product){
 		
 		Category category = product.getCategory();
 		if(category.getCategoryName() == null || category.getCategoryName().length() == 0) {
-			return new ResponseEntity<>(new MyExceptionDetails("Empty category name field !", "uri=/product/product"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new MyExceptionDetails("Empty category name field !", "uri=/user/product"), HttpStatus.BAD_REQUEST);
 		}
 		
 		Optional<Category> optionalCategory = categoryRepository.findByCategoryName(category.getCategoryName());
@@ -63,12 +62,12 @@ public class ProductService {
 		}
 		Product oldProduct = result.get();
 		if(product.getTitle() != null) { oldProduct.setTitle(product.getTitle()); }
-		if(product.getPrice() != null) { oldProduct.setPrice(product.getPrice()); }
+		if(product.getPrice() != 0) { oldProduct.setPrice(product.getPrice()); }
 		if(product.getDescription() != null) { oldProduct.setDescription(product.getDescription()); }
 		return ResponseEntity.ok(productRepository.save(oldProduct));
 	}
 	
-	public ResponseEntity<List<Product>> getProducts(){
+	public ResponseEntity<List<?>> getProducts(){
 		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
 		return ResponseEntity.ok(productRepository.findBySeller(userRepository.findByEmail(loggedInUser.getName()).get()));
 	}
@@ -82,10 +81,14 @@ public class ProductService {
 		}
 	}
 
-	public ResponseEntity<List<Product>> getProductByCategory(String categoryName) {
+	public ResponseEntity<?> getProductByCategory(String categoryName) {
 		Optional<Category> optionalCategory = categoryRepository.findByCategoryName(categoryName);
+		if(optionalCategory.isEmpty()) {
+			return new ResponseEntity<>(new MyExceptionDetails("category not available !", "uri=/user/products/{category}"), HttpStatus.BAD_REQUEST);
+		}
 		Category category = optionalCategory.get();
-		return new ResponseEntity<>(productRepository.findByCategory(category),HttpStatus.OK);
+		List<?> products = productRepository.getByCategory(category);
+		return new ResponseEntity<>(products,HttpStatus.OK);
 	}
 	
 }

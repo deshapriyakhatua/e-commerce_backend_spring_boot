@@ -57,8 +57,9 @@ public class User {
 	@Column(nullable = true)
 	private String name;
 	
-	@Column(nullable = true)
-	private String city;
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	@JsonIgnoreProperties("user")
+	private Set<Address> addresses;
 	
 	@ManyToMany(mappedBy = "carts", fetch = FetchType.LAZY)
 	@JsonIgnoreProperties("carts")

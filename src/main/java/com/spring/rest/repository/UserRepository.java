@@ -11,11 +11,15 @@ import com.spring.rest.model.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, UUID> {
 	
-	@Query("select new com.spring.rest.model.User(u.email, u.password, u.role) from User u  where u.email = ?1")
+	Optional<User> findByEmail(String email);
+	
+	
+	// custom query
+	
+	@Query("select new com.spring.rest.model.User(u.email, u.password, u.role) from User u join u.role r where u.email = ?1")
 	Optional<User> getByEmail(String email);
 	
 	@Query("select new com.spring.rest.model.User(u.email, u.password, u.role) from User u")
 	public List<User> getAllUsers();
 	
-	Optional<User> findByEmail(String email);
 }
